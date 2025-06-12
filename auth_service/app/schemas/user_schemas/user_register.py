@@ -1,6 +1,4 @@
 from pydantic import BaseModel,Field
-from typing import Optional
-
 from pydantic.types import SecretStr
 
 class UserRegister(BaseModel):

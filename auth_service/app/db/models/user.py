@@ -1,9 +1,7 @@
 from __future__ import annotations
-from typing import List,TYPE_CHECKING
-from sqlalchemy.ext.asyncio import AsyncSession
-from db.base import Base
-from sqlalchemy.orm import Mapped,mapped_column,relationship
-from sqlalchemy import Integer,String
+from auth_service.app.db.base import Base
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Integer, String
 
 class User(Base):
     __tablename__ = 'users'
