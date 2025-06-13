@@ -1,9 +1,7 @@
 from __future__ import annotations
-from auth_service.app.db.base import Base
-from teams_service.app.models.teams_enums.enums import DirectionEnum
-
-from sqlalchemy import Column, Integer, String, Enum, ForeignKey
-from sqlalchemy.orm import relationship
+from app.db.base import Base
+from app.db.models.teams_enums.enums import DirectionEnum
+from sqlalchemy import Column, Integer, String, Enum
 
 class Team(Base):
     __tablename__ = "teams"
@@ -14,10 +12,5 @@ class Team(Base):
     photo_url = Column(String)
     city = Column(String)
     region = Column(String)
-
-    organization_id = Column(Integer, ForeignKey("organizations.id"))
-    organization = relationship("Organization", back_populates="teams")
-
-    leader_id = Column(Integer, ForeignKey("users.id"))
-    leader = relationship("User", back_populates="leading_teams")
-
+    organization_id = Column(Integer)
+    leader_id = Column(Integer)

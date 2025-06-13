@@ -11,10 +11,10 @@ from services.jwt import create_access_token
 
 from fastapi import APIRouter,Depends
 
-from auth_service.app.schemas.user_schemas.user_register import UserRegister
+from schemas.user_schemas.user_register import UserRegister
 
-from auth_service.app.db.session import get_db
-from auth_service.app.cruds.users_crud.crud import UserCRUD
+from db.session import get_db
+from cruds.users_crud.crud import UserCRUD
 
 from sqlalchemy.ext.asyncio import AsyncSession
 

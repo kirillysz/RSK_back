@@ -1,8 +1,8 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth_service.app.db.models.user import User
-from auth_service.app.routes.users_router.auth_logic import pass_settings
+from db.models.user import User
+from routes.users_router.auth_logic import pass_settings
 
 from fastapi import HTTPException
 

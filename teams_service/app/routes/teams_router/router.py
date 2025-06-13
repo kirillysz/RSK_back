@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from teams_service.app.shemas.team_shemas.team_register import TeamRegister
-from teams_service.app.cruds.teams_crud.crud import TeamCRUD
+from app.shemas.team_shemas.team_register import TeamRegister
+from app.cruds.teams_crud.crud import TeamCRUD
 
-from teams_service.app.db.session import get_db
+from app.db.session import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/teams", tags=["Teams"])

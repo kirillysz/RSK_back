@@ -1,7 +1,7 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from teams_service.app.db.models.teams import Team
+from app.db.models.teams import Team
 from fastapi import HTTPException
 
 
@@ -20,12 +20,12 @@ class TeamCRUD:
         new_team = Team(
             name=team_data.name,
             direction=team_data.direction,
-            photo_url=team_data.photo_url,
+            
             city=team_data.city,
             region=team_data.region,
             organization_id=team_data.organization_id,
             leader_id=team_data.leader_id,
-            folder_url=team_data.folder_url,
+            
         )
 
         db.add(new_team)
