@@ -1,13 +1,10 @@
-from fastapi import APIRouter,HTTPException,Response,status,Depends
+from fastapi import APIRouter,Depends
 
-from auth_service.app.routes.users_router.auth_logic import pass_settings
 from auth_service.app.schemas.user_schemas.user_register import UserRegister
 
-from auth_service.app.db.models.user import User
 from auth_service.app.db.session import get_db
 from auth_service.app.cruds.users_crud.crud import UserCRUD
 
-from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 

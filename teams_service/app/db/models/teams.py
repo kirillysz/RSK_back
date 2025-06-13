@@ -1,6 +1,6 @@
 from __future__ import annotations
 from auth_service.app.db.base import Base
-from auth_service.app.db.models.teams_enums.enums import DirectionEnum
+from teams_service.app.models.teams_enums.enums import DirectionEnum
 
 from sqlalchemy import Column, Integer, String, Enum, ForeignKey
 from sqlalchemy.orm import relationship
