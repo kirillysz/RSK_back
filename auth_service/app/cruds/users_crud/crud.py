@@ -11,6 +11,7 @@ class UserCRUD:
         existing_user = await db.execute(
             select(User).where(User.name == user_data.name)
         )
+        
         if existing_user.scalar_one_or_none():
             raise HTTPException(
                 status_code=400,
