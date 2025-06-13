@@ -7,6 +7,11 @@ from sqlalchemy.orm import Mapped,mapped_column,relationship
 from sqlalchemy import Integer,String
 from routes.users_router.auth_logic import pass_settings
 
+from auth_service.app.db.base import Base
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Integer, String
+
+
 class User(Base):
     __tablename__ = 'users'
 
