@@ -1,6 +1,4 @@
 from fastapi import APIRouter,HTTPException,Response,status,Depends
-from routes.users_router.auth_logic import pass_settings
-from sqlalchemy.future import select
 from schemas.user_schemas.user_register import UserRegister
 from schemas.user_schemas.user_auth import UserAuth
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -34,6 +32,9 @@ async def auth_user(response:Response,user_data: UserAuth,db: AsyncSession = Dep
 
     if response:
         return "Access successed"
+    
+
+    
 
     
 
