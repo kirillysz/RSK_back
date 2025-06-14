@@ -1,6 +1,7 @@
 
 from fastapi import APIRouter,HTTPException,Response,status,Depends
 from schemas.user_schemas.user_register import UserRegister
+from schemas.user_schemas.user_password import ChangePasswordSchema
 from schemas.user_schemas.user_auth import UserAuth
 from sqlalchemy.ext.asyncio import AsyncSession
 from db.models.user import User
@@ -64,6 +65,16 @@ async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
     if not success:
         raise HTTPException(status_code=404, detail="User not found")
     return {"message": "User deleted successfully"}
+
+@router.post('/change_password/')
+async def change_password(user_id: int, passwords: ChangePasswordSchema ,db: AsyncSession = Depends(get_db)):
+    try:
+        await UserCRUD.change_user_password(db=db,user_id=user_id,old_password=passwords.current_password.get_secret_value(),new_password=passwords.new_password.get_secret_value())
+        return {
+            "message" : "Password changed succes"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=f"error is in {str(e)}")
     
 
     

@@ -76,3 +76,30 @@ class UserCRUD:
                 status_code=500,
                 detail=f"Error while deleting user: {str(e)}"
             )
+        
+    async def change_user_password(db: AsyncSession, user_id: int,old_password: str, new_password: str):
+        result = await db.execute(select(User).where(User.id == user_id))
+        user = result.scalar_one_or_none()
+
+        if not user:
+            raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )   
+
+        if not pass_settings.verify_password(old_password,user.hashed_password):
+            raise HTTPException(
+            status_code=400,
+            detail="Incorrect current password"
+        )
+
+        new_hashed_password = pass_settings.get_password_hash(new_password)
+        user.hashed_password = new_hashed_password
+
+        try:
+            await db.commit()
+            await db.refresh(user)
+            return user
+        except Exception as e:
+            await db.rollback()
+            raise HTTPException(status_code=500,detail=f"{str(e)}")
