@@ -20,7 +20,6 @@ class TeamCRUD:
         new_team = Team(
             name=team_data.name,
             direction=team_data.direction,
-            
             city=team_data.city,
             region=team_data.region,
             organization_id=team_data.organization_id,

@@ -20,7 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 
-router = APIRouter(prefix='/user_reg',tags=['Auth'])
+router = APIRouter(prefix='/users_interaction',tags=['AuthSystem'])
 
 @router.post('/register/')
 async def register_user(user_data: UserRegister, db: AsyncSession = Depends(get_db)):
@@ -43,6 +43,27 @@ async def auth_user(response:Response,user_data: UserAuth,db: AsyncSession = Dep
 
     if response:
         return "Access successed"
+    
+@router.get('/get_users/')
+async def get_all_users(db: AsyncSession = Depends(get_db)):
+    
+    try:
+        users = await UserCRUD.get_all_users(db)
+        return users
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch users: {str(e)}"
+        )
+    
+@router.delete('/delete_user/')
+async def delete_user(user_id: int, db: AsyncSession = Depends(get_db)):
+    success = await UserCRUD.delete_user(db, user_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"message": "User deleted successfully"}
     
 
     

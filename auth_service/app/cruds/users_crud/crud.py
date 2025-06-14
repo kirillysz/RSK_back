@@ -43,3 +43,36 @@ class UserCRUD:
                 status_code=500,
                 detail=f"Error while registering user: {str(e)}"
             )
+        
+    async def get_all_users(db: AsyncSession):
+        try:
+            result = await db.execute(select(User))
+            users = result.scalars().all()
+            
+            if not users:  
+                return []
+                
+            return users
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error while fetching users: {str(e)}"
+            )
+
+    async def delete_user(db: AsyncSession, user_id: int):
+        result = await db.execute(select(User).where(User.id == user_id))
+        user = result.scalar_one_or_none()
+        
+        if not user:
+            return False
+        
+        try:
+            await db.delete(user)
+            await db.commit()
+            return True
+        except Exception as e:
+            await db.rollback()
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error while deleting user: {str(e)}"
+            )
