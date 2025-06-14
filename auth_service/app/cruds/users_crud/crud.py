@@ -103,3 +103,16 @@ class UserCRUD:
         except Exception as e:
             await db.rollback()
             raise HTTPException(status_code=500,detail=f"{str(e)}")
+        
+    async def get_user_by_id(db: AsyncSession, user_id: int):
+        result = await db.execute(select(User).where(User.id == user_id))
+        user = result.scalar_one_or_none()
+
+        if not user:
+            raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+        
+        return {"name": user.name}
+
