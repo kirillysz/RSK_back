@@ -77,6 +77,39 @@ class TeamCRUD:
             return []
         
         return teams
+    
+    async def get_team_by_id(db: AsyncSession, team_id: int):
+        result = await db.execute(select(Team).where(Team.id == team_id))
+        team = result.scalar_one_or_none()
+
+        if not team:
+            return []
+        
+        return team
+    
+    @staticmethod
+    async def update_team(db: AsyncSession, team_id: int, update_data: dict):
+        result = await db.execute(select(Team).where(Team.id == team_id))
+        team = result.scalar_one_or_none()
+        
+        if not team:
+            raise HTTPException(status_code=404, detail="Team not found")
+        
+        for key, value in update_data.items():
+            setattr(team, key, value)
+        
+        try:
+            await db.commit()
+            await db.refresh(team)
+            return team
+        except Exception as e:
+            await db.rollback()
+            raise HTTPException(status_code=500, detail=f"Error updating team: {str(e)}")
+
+    @staticmethod
+    async def get_teams_by_organization(db: AsyncSession, org_id: int):
+        result = await db.execute(select(Team).where(Team.organization_id == org_id))
+        return result.scalars().all()
         
 
         

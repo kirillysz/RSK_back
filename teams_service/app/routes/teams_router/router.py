@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.shemas.team_shemas.team_register import TeamRegister
 from app.cruds.teams_crud.crud import TeamCRUD
-
+from app.shemas.team_shemas.team_update import TeamUpdate
 from app.db.session import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -36,3 +36,29 @@ async def delete_team(
             status_code=500,
             detail=f"Server error: {str(e)}"
         )
+    
+@router.get('/get_team_by_id/{team_id}')
+async def get_team_by_id(team_id: int, db: AsyncSession = Depends(get_db)):
+    try:
+        team = await TeamCRUD.get_team_by_id(team_id=team_id,db=db)
+        return team
+        
+    except Exception as e:
+        raise HTTPException(status_code=404,detail=f"team with {team_id} not found")
+    
+@router.get('/get_team_by_organization/{org_id}')
+async def get_team_by_org(org_id: int,db: AsyncSession = Depends(get_db)):
+    try:
+        team = await TeamCRUD.get_teams_by_organization(db=db,org_id=org_id)
+        return team
+    except Exception as e:
+        raise HTTPException(status_code=404,detail=f"not found")
+    
+@router.patch('/update_team_data/{team_id}')
+async def update_team_data(team_id: int,update_data: TeamUpdate, db: AsyncSession = Depends(get_db)):
+    try:
+        team = await TeamCRUD.update_team(db=db,team_id=team_id,update_data=update_data.model_dump())
+        return team
+    except Exception as e:
+        raise HTTPException(status_code=500,detail=f"{str(e)}")
+

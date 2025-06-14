@@ -20,7 +20,7 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(String(255),nullable=False)
 
     @classmethod
-    async def check_user(cls,name: str,password: str,db: AsyncSession):
+    async def check_user(cls, name: str, password: str, db: AsyncSession):
         result = await db.execute(select(cls).where(cls.name == name))
         user = result.scalar_one_or_none()
         if not user or not pass_settings.verify_password(plain_password=password,hashed_password=user.hashed_password):
