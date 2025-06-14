@@ -41,30 +41,43 @@ class TeamCRUD:
                 detail=f"Error while registering team: {str(e)}"
             )
     
+    
     @staticmethod
-    async def delete_team(db: AsyncSession, team_id):
-        exiting_team = await db.execute(
-            select(Team).where(Team.id == team_id)
-        )
-        team = exiting_team.scalar_one_or_none()
+    async def delete_team(db: AsyncSession, team_id: int): 
         
-        if team is not None:
+        result = await db.execute(
+            select(Team).where(Team.id == team_id)  
+        )
+        team = result.scalar_one_or_none()
+        
+        
+        if team is None:  
             raise HTTPException(
                 status_code=404,
                 detail=f"Team with id {team_id} not found"
             )
         
-        await db.delete(team)
-
-        try:
-            await db.commit()
-            return {"detail": f"Team with id {team_id} deleted successfully"}
         
+        try:
+            await db.delete(team)
+            await db.commit()
+            return True
         except Exception as e:
             await db.rollback()
             raise HTTPException(
                 status_code=500,
-                detail=f"Error while deleting team: {str(e)}"
+                detail=f"Database error while deleting team: {str(e)}"
             )
+        
+    async def get_all_teams(db: AsyncSession):
+        result = await db.execute(select(Team))
+        teams = result.scalars().all()
+        
+        if not teams:
+            return []
+        
+        return teams
+        
+
         
     
