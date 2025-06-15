@@ -1,0 +1,13 @@
+from pydantic import BaseModel
+from typing import Optional
+from db.models.user_enum import UserEnum
+
+class ProfileUpdateSchema(BaseModel):
+    NameIRL: Optional[str] = None
+    Surname: Optional[str] = None
+    Patronymic: Optional[str] = None
+    Description: Optional[str] = None
+    Region: Optional[str] = None
+    Type: Optional[UserEnum] = None
+    Organization: Optional[str] = None
+    team: Optional[str] = None
