@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, HttpUrl
 from typing import Optional
-from app.db.models.teams_enums.enums import DirectionEnum
+from db.models.teams_enums.enums import DirectionEnum
 
 class TeamRegister(BaseModel):
     name: str = Field(..., title="Название команды")

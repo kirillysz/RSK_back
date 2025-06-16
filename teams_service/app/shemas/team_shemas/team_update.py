@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from app.db.models.teams_enums.enums import DirectionEnum
+from db.models.teams_enums.enums import DirectionEnum
 
 class TeamUpdate(BaseModel):
     name: str = Field(..., title="Название команды")
