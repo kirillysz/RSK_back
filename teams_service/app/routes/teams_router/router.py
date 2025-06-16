@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from app.shemas.team_shemas.team_register import TeamRegister
-from app.cruds.teams_crud.crud import TeamCRUD
-from app.shemas.team_shemas.team_update import TeamUpdate
-from app.db.session import get_db
+from shemas.team_shemas.team_register import TeamRegister
+from cruds.teams_crud.crud import TeamCRUD
+from shemas.team_shemas.team_update import TeamUpdate
+from db.session import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/teams", tags=["Teams"])

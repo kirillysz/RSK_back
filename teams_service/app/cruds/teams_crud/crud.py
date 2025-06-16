@@ -1,7 +1,7 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.models.teams import Team
+from db.models.teams import Team
 from fastapi import HTTPException
 
 

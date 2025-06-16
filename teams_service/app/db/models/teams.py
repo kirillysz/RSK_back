@@ -1,6 +1,6 @@
 from __future__ import annotations
-from app.db.base import Base
-from app.db.models.teams_enums.enums import DirectionEnum
+from db.base import Base
+from db.models.teams_enums.enums import DirectionEnum
 from sqlalchemy import Column, Integer, String, Enum
 
 class Team(Base):

@@ -6,9 +6,9 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 from config import settings
-from app.db.base import Base
+from db.base import Base
 
-from app.db.models.teams import Team
+from db.models.teams import Team
 
 
 # this is the Alembic Config object, which provides
