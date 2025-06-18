@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  rsk_profile_app:
+    build: .
+    depends_on:
+      rsk_profile_db:
+        condition: service_healthy
+    ports:
+      - "8003:8003"
+    restart: on-failure
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    networks:
+      - app_network
+
+  rsk_profile_db:
+    image: postgres:17-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "5435:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+    driver: bridge

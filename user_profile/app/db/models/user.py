@@ -15,7 +15,11 @@ class User(Base):
     Region: Mapped[str] = mapped_column(String(100))
     Type: Mapped[UserEnum] = mapped_column(SQLEnum(UserEnum), nullable=False)
     Organization: Mapped[str] = mapped_column(String(100))
+    Organization_id: Mapped[int] = mapped_column(Integer)
+
     team: Mapped[str] = mapped_column(String(100))
+    team_id: Mapped[int] = mapped_column(Integer)
+    
 
     
 
