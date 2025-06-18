@@ -41,7 +41,7 @@ class UserCRUD:
             await db.rollback()
             raise HTTPException(
                 status_code=500,
-                detail=f"Error while registering user: {str(e)}"
+                detail=f"Error while registering user: {str(e)},user registration failed with error {str(e)}"
             )
         
     async def get_all_users(db: AsyncSession):
