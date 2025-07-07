@@ -46,7 +46,7 @@ async def auth_user(response:Response,user_data: UserAuth,db: AsyncSession = Dep
     if response:
         return "Access successed"
     
-@router.get('/get_users/')
+@router.get('/get_users/',description='Для админа будет ток ')
 async def get_all_users(db: AsyncSession = Depends(get_db)):
     
     try:
