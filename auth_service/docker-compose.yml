@@ -1,9 +1,10 @@
-
 services:
   rsk_auth_app:
     build: .
     depends_on:
       rsk_auth_db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     ports:
       - "8002:8002"
@@ -33,9 +34,21 @@ services:
       - app_network
       
   rabbitmq:
-    image: rabbitmq:3.10.7-management
+    image: rabbitmq:3.12-management  
     ports:
-      - 15672:15672
+      - "5672:5672" 
+      - "15672:15672"  
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+    networks:
+      - app_network  
 
 volumes:
   postgres_data:
