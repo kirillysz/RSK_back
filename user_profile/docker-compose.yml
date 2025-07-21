@@ -6,8 +6,10 @@ services:
     depends_on:
       rsk_profile_db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     ports:
-      - "8003:8003"
+      - "8003:8003"  
     restart: on-failure
     env_file:
       - .env
@@ -19,11 +21,13 @@ services:
   rsk_profile_db:
     image: postgres:17-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - .env
+      - profile_postgres_data:/var/lib/postgresql/data  
+    environment:  
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+      POSTGRES_DB: rsk_profile
     ports:
-      - "5435:5432"
+      - "5435:5432"  
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -33,8 +37,25 @@ services:
     networks:
       - app_network
 
+  rabbitmq:
+    image: rabbitmq:3.12-management  
+    ports:
+      - "5673:5672"  
+      - "15673:15672" 
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: yourstrongpassword
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+    networks:
+      - app_network 
+
 volumes:
-  postgres_data:
+  profile_postgres_data:  
 
 networks:
   app_network:
