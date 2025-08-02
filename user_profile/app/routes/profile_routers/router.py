@@ -26,3 +26,8 @@ async def create_profile(profile_data: ProfileCreateSchema, db: AsyncSession = D
         "message": "successfully",
         
     }
+
+@router.get("/get_profile/")
+async def get_profiles(db: AsyncSession = Depends(get_db)):
+    users = await ProfileCRUD.get_all_users_profiles(db)
+    return users
