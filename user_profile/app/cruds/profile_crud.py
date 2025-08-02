@@ -18,6 +18,7 @@ class ProfileCRUD:
             )
 
         new_profile = User(
+            
             NameIRL=profile_data.NameIRL,
             Surname = profile_data.Surname,
             Patronymic = profile_data.Patronymic,
@@ -45,5 +46,9 @@ class ProfileCRUD:
                 detail=f"Error while registering team: {str(e)}"
             )
     
+    @staticmethod
+    async def get_all_users_profiles(db: AsyncSession):
+        result = await db.execute(select(User))
+        return result.scalars().all()
     
     
