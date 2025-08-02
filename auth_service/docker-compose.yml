@@ -14,12 +14,16 @@ services:
     volumes:
       - .:/app
     networks:
-      - app_network
+      - shared_network
 
   rsk_auth_db:
     image: postgres:17-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2305
+      POSTGRES_DB: rsk_back
     env_file:
       - .env
     ports:
@@ -31,7 +35,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - app_network
+      - shared_network
       
   rabbitmq:
     image: rabbitmq:3.12-management  
@@ -48,11 +52,11 @@ services:
       retries: 5
     restart: always
     networks:
-      - app_network  
+      - shared_network  
 
 volumes:
   postgres_data:
 
 networks:
-  app_network:
-    driver: bridge
+  shared_network:
+    external: true
