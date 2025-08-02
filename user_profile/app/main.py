@@ -3,27 +3,29 @@ from fastapi import FastAPI
 from routes.profile_routers.router import router
 from services.rabbitmq import consume_user_created_events
 from config import settings
+from db.base import Base
+from db.session import engine
 
-app = FastAPI(title='FastAPI',description='xxx',docs_url='/')
-
+app = FastAPI(title='User Profile Service', docs_url='/')
 
 app.include_router(router)
 
-app = FastAPI()
-
 @app.on_event("startup")
 async def startup():
-    start_consumer()
-    asyncio.create_task(
-        consume_user_created_events(settings.RABBITMQ_URL)
-    )
+    
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-async def start_consumer():
-    while True:
+    
+    loop = asyncio.get_event_loop()
+    task = loop.create_task(consume_user_created_events(settings.RABBITMQ_URL))
+    
+    
+    def handle_task_result(task: asyncio.Task) -> None:
         try:
-            await consume_user_created_events(settings.RABBITMQ_URL)
+            task.result()
         except Exception as e:
-            print(f"Consumer error: {e}, retrying in 5s...")
-            await asyncio.sleep(5)
+            print(f"RabbitMQ consumer crashed: {e}")
+            
 
-asyncio.create_task(start_consumer())
+    task.add_done_callback(handle_task_result)
