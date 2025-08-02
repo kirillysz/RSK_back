@@ -31,10 +31,11 @@ async def register_user(user_data: UserRegister, db: AsyncSession = Depends(get_
 
     try:
         channel = await rabbitmq.channel()
-        exchange = await channel.declare_exchange("user_events",type="direct")
+        exchange = await channel.declare_exchange("user_events",type="direct",durable=True)
         message = aio_pika.Message(
             body=str(user.id).encode(),
-            headers={"event_type": "user_created"}
+            headers={"event_type": "user_created"},
+            delivery_mode=aio_pika.DeliveryMode.PERSISTENT
         )
         await exchange.publish(
             message,
