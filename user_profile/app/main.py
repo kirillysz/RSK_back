@@ -7,7 +7,7 @@ from db.base import Base
 from db.session import engine
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title='User Profile Service', docs_url='/')
+app = FastAPI(title='User Profile Service', root_path='/users')
 
 app.add_middleware(
     CORSMiddleware,

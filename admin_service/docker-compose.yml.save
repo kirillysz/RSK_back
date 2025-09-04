@@ -8,7 +8,6 @@ services:
       - .env
     networks:
       - shared_network
-    restart: unless-stopped
 
 networks:
   shared_network:

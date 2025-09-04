@@ -1,13 +1,10 @@
-
-
 services:
+  # === Приложение: rsk_profile_app ===
   rsk_profile_app:
     build: .
     depends_on:
       rsk_profile_db:
         condition: service_healthy
-    ports:
-      - "8003:8003"
     restart: on-failure
     env_file:
       - .env
@@ -15,7 +12,14 @@ services:
       - .:/app
     networks:
       - shared_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rsk_users_app.rule=Host(`api.rosdk.ru`) && PathPrefix(`/users`)"
+      - "traefik.http.routers.rsk_users_app.entrypoints=websecure"
+      - "traefik.http.routers.rsk_users_app.tls.certresolver=le"
+      - "traefik.http.services.rsk_users_app.loadbalancer.server.port=8003"
 
+  # === PostgreSQL ===
   rsk_profile_db:
     image: postgres:17-alpine
     volumes:
