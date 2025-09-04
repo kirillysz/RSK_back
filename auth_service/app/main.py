@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.users_router.router import router as user_router
 from services.rabbitmq import init_rabbitmq
 
-app = FastAPI(title='FastAPI',description='xxx',docs_url='/')
+app = FastAPI(title='Auth FASTAPI',description='xxx',root_path='/auth')
 
 app.add_middleware(
     CORSMiddleware,

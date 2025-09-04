@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from routes.org_route import router as orgs_router
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="FastAPI", description="xxx", docs_url="/")
+app = FastAPI(title="ORGS FASTAPI", description="xxx", root_path="/orgs")
 
 app.add_middleware(
     CORSMiddleware,

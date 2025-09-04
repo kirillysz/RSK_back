@@ -4,8 +4,6 @@ services:
     depends_on:
       test_orgs_db:
         condition: service_healthy
-    ports:
-      - "8005:8005"
     restart: on-failure
     env_file:
       - .env
@@ -13,6 +11,12 @@ services:
       - .:/app
     networks:
       - shared_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rsk_orgs_service.rule=Host(`api.rosdk.ru`) && PathPrefix(`/orgs`)"
+      - "traefik.http.routers.rsk_orgs_service.entrypoints=websecure"
+      - "traefik.http.routers.rsk_orgs_service.tls.certresolver=le"
+      - "traefik.http.services.rsk_orgs_service.loadbalancer.server.port=8005"
 
   test_orgs_db:
     image: postgres:17-alpine
@@ -38,4 +42,4 @@ volumes:
 
 networks:
   shared_network:
-    external: true 
+    external: true
