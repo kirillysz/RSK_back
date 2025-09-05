@@ -9,3 +9,4 @@ async def handle(data: dict):
 
     if action == "get_all":
         return await project_client.get_all_projects(project_id)
+    

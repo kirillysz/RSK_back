@@ -2,19 +2,18 @@ import aio_pika
 import json
 
 from config import settings
+from handlers.projects import handle as project_handler
 
 class RabbitMQConsumer:
     def __init__(self):
-        self.url: str = settings.WORKSHOP_URL
+        self.url: str = settings.RABBIT_URL
 
         self.connection: aio_pika.Connection | None = None
         self.channel: aio_pika.Channel | None = None
         self.exchange: aio_pika.Exchange | None = None
 
     async def connect(self) -> None:
-        self.connection = await aio_pika.connect(
-            url=self.url
-        )
+        self.connection = await aio_pika.connect_robust(url=self.url)
         self.channel = await self.connection.channel()
 
         self.exchange = await self.channel.declare_exchange(
@@ -38,4 +37,4 @@ class RabbitMQConsumer:
             if routing_key is None: return
             
             if routing_key.startswith("projects"):
-                ...
+                await project_handler(data=data)
