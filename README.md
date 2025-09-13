@@ -18,7 +18,7 @@
 
 > Должны быть на пк установлены Docker, Docker desktop
 ```sh
-git clone https://github.com/Tetsuozxcmid/RSK_back
+git clone https://github.com/kirillysz/RSK_back
 ```
 ```sh
 cd rsk_back
@@ -49,6 +49,7 @@ docker compose up -d --build
 cd admin_service
 docker compose up -d --build
 ```
+
 
 
 
